@@ -2,7 +2,6 @@ name: keepalive
 
 on:
   schedule:
-    # GitHub cron 用 UTC；*/5 = 每 5 分钟（基本是能设的最小粒度）
     - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
@@ -12,12 +11,9 @@ jobs:
     timeout-minutes: 2
     steps:
       - name: Curl health check
-        env:
-          TARGET_URL: ${{ secrets.KEEPALIVE_URL }} # 例如 https://你的域名/_stcore/health
         run: |
           set -e
-          echo "Pinging: $TARGET_URL"
           curl -fsS \
             --max-time 10 \
             --retry 3 --retry-delay 2 --retry-all-errors \
-            "$TARGET_URL" > /dev/null
+            "https://whkmsalessalary-production.up.railway.app/" > /dev/null
