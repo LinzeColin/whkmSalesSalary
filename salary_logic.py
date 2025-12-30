@@ -94,7 +94,6 @@ def score_customer_cost(rate: float) -> float:
 
 @dataclass
 class CalcResult:
-    project: str
     weights: Dict[str, float]
     performance_rate: float
     breakdown: List[Dict[str, Any]]
@@ -105,7 +104,6 @@ class CalcResult:
 
 
 def calculate(
-    project: str,
     year_target: float,
     quarter_actual: float,
     margin: float,
@@ -116,8 +114,6 @@ def calculate(
     customer_rate: float,
     tax_keep_rate: float = 0.97,
 ) -> CalcResult:
-    if project not in projects:
-        raise ValueError(f"未知项目：{project}")
     if year_target <= 0:
         raise ValueError("年度目标产值必须 > 0")
     if quarter_actual <= 0:
@@ -155,7 +151,6 @@ def calculate(
     after_tax_salary = total_salary * tax_keep_rate
 
     return CalcResult(
-        project=project,
         weights=weights,
         performance_rate=performance_rate,
         breakdown=breakdown,
