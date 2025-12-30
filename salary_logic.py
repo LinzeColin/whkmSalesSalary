@@ -155,4 +155,42 @@ def calculate(
 
     weights = resolve_weights(weights=weights, province=province)
 
-    performance_rate = quarter_actual / (y
+    performance_rate = quarter_actual / (year_target / 4)
+
+    scores = {
+        "业绩": score_performance(performance_rate),
+        "毛利率": score_margin(margin),
+        "结算率": score_settlement(settlement_days),
+        "开票率": score_invoice(invoice_days),
+        "回款率": score_payback(payback_days),
+        "审计偏差": score_audit_bias(audit_bias),
+        "客情成本": score_customer_cost(customer_rate),
+    }
+
+    breakdown: List[Dict[str, Any]] = []
+    weighted_total = 0.0
+    for k, s in scores.items():
+        w = float(weights.get(k, 0))
+        ws = s * w
+        weighted_total += ws
+        breakdown.append({
+            "项目": k,
+            "原始得分": round(s, 2),
+            "权重": round(w, 4),
+            "加权得分": round(ws, 2),
+            "累计得分": round(weighted_total, 2),
+        })
+
+    perf_money = PERF_QUARTER_POOL * (weighted_total / 100.0)
+    total_salary = BASE_MONTHLY * 3 + perf_money
+    after_tax_salary = total_salary * tax_keep_rate
+
+    return CalcResult(
+        weights=weights,
+        performance_rate=performance_rate,
+        breakdown=breakdown,
+        total_score=weighted_total,
+        perf_money=perf_money,
+        total_salary=total_salary,
+        after_tax_salary=after_tax_salary,
+    )
