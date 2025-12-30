@@ -64,7 +64,6 @@ province_weights = {
 
 # ---------------- 表单输入区 ----------------
 province = st.selectbox("选择省份", list(province_weights.keys()))
-project = st.selectbox("项目名称", list(projects.keys()))
 
 # 自动选择当前省份的权重
 weights = province_weights[province]
