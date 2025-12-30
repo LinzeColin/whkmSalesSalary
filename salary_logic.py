@@ -119,7 +119,7 @@ def calculate(
     if quarter_actual <= 0:
         raise ValueError("实际季度业绩必须 > 0")
 
-    weights = projects[project]
+
     performance_rate = quarter_actual / (year_target / 4)
 
     scores = {
