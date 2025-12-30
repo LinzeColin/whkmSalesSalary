@@ -68,34 +68,18 @@ province = st.selectbox("选择省份", list(province_weights.keys()))
 # 自动选择当前省份的权重
 weights = province_weights[province]
 
-df_weights = (
-    pd.Series(weights, name="权重")
-      .rename_axis("指标")
-      .reset_index()
-)
-df_weights["权重(%)"] = (df_weights["权重"] * 100).round(2).astype(str) + "%"
+st.subheader("输入数据")
+year_target = st.number_input("年度目标产值（元）", min_value=0.0, value=1000000.0, step=10000.0)
+quarter_actual = st.number_input("实际季度产值（元）", min_value=0.0, value=250000.0, step=10000.0)
 
-st.subheader(f"📊 {province}省项目指标权重表")
-styler = (
-    df_weights[["指标", "权重", "权重(%)"]]
-    .style
-    .hide(axis="index")
-    .set_properties(**{"text-align": "center"})
-    .set_table_styles([{"selector": "th", "props": [("text-align", "center")]}])
-)
-st.dataframe(styler, use_container_width=True, hide_index=True)
-st.info(f"提示：当前省份为 {province}，权重总和为 {sum(weights.values()):.2f}。")
-
-# ---------------- 输入区 ----------------
 col1, col2 = st.columns(2)
 with col1:
-    year_target = st.number_input("年度目标产值", min_value=0.0, value=5000000.0, step=10000.0, format="%.2f")
-    quarter_actual = st.number_input("实际季度业绩", min_value=0.0, value=250000.0, step=10000.0, format="%.2f")
-    margin = st.number_input("毛利率（如 -0.05）", min_value=-3.0, max_value=1.0, value=0.25, step=0.01, format="%.4f")
+    margin = st.number_input("毛利率（如 0.25）", min_value=0.0, value=0.25, step=0.01, format="%.4f")
 with col2:
     settlement_days = st.number_input("结算时间（工作日）", min_value=0, value=10, step=1)
-    invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
-    payback_days = st.number_input("回款时间（工作日）", min_value=0, value=30, step=1)
+
+invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
+payback_days = st.number_input("回款时间（工作日）", min_value=0, value=30, step=1)
 
 col3, col4 = st.columns(2)
 with col3:
@@ -117,6 +101,7 @@ if st.button("开始计算"):
             payback_days=int(payback_days),
             audit_bias=audit_bias,
             customer_rate=customer_rate,
+            weights=weights,
             tax_keep_rate=tax_keep_rate,
         )
     except Exception as e:
