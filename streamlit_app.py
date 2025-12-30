@@ -69,17 +69,20 @@ province = st.selectbox("选择省份", list(province_weights.keys()))
 weights = province_weights[province]
 
 st.subheader("输入数据")
-year_target = st.number_input("年度目标产值（元）", min_value=0.0, value=1000000.0, step=10000.0)
+year_target = st.number_input("年度目标产值（元）", min_value=0.0, value=5000000.0, step=10000.0)
 quarter_actual = st.number_input("实际季度产值（元）", min_value=0.0, value=250000.0, step=10000.0)
 
 col1, col2 = st.columns(2)
 with col1:
-    margin = st.number_input("毛利率（如 0.25）", min_value=0.0, value=0.25, step=0.01, format="%.4f")
+    margin = st.number_input("毛利率（如 0.25）", value=0.25, step=0.01, format="%.4f")
 with col2:
     settlement_days = st.number_input("结算时间（工作日）", min_value=0, value=10, step=1)
 
-invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
-payback_days = st.number_input("回款时间（工作日）", min_value=0, value=30, step=1)
+col5, col6 = st.columns(2)
+with col5:
+    invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
+with col6:
+    payback_days = st.number_input("回款时间（工作日）", min_value=0, value=30, step=1)
 
 col3, col4 = st.columns(2)
 with col3:
@@ -102,8 +105,7 @@ if st.button("开始计算"):
             audit_bias=audit_bias,
             customer_rate=customer_rate,
             weights=weights,
-            tax_keep_rate=tax_keep_rate,
-        )
+            tax_keep_rate=tax_keep_rate,)
     except Exception as e:
         st.error(f"计算出错：{e}")
     else:
