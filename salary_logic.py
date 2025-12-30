@@ -72,9 +72,9 @@ def score_margin(rate: float) -> float:
 
 
 def score_settlement(days: int) -> float:
-    if days >= 60:
+    if days > 60:
         return min(-100, -100 - (days - 30) * 5)
-    if 20 <= days < 60:
+    if 20 <= days <= 60:
         return min(100, 100 - (days - 20) * 5)
     if 1 < days < 20:
         return min(200, 200 - (days) * 5)
