@@ -62,7 +62,7 @@ def score_performance(rate: float) -> float:
 
 def score_margin(rate: float) -> float:
     if rate < 0.1:
-        return min(0, 0 - (0.1 - rate) * 800)
+        return min(0, 0 - (0.1 - rate) * 1000)
     elif 0.1 <= rate <= 0.25:
         return (rate - 0.1) * 200
     elif 0.25 < rate <= 0.5:
