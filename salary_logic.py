@@ -66,9 +66,9 @@ def score_margin(rate: float) -> float:
     elif 0.1 <= rate <= 0.25:
         return (rate - 0.1) * 200
     elif 0.25 < rate <= 0.5:
-        return 30 + (rate - 0.25) * 400
+        return 30 + (rate - 0.25) * 200
     else:
-        return min(100, 100 + (rate - 0.5) * 500)
+        return min(80, 80 + (rate - 0.5) * 500)
 
 
 def score_settlement(days: int) -> float:
