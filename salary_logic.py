@@ -73,7 +73,7 @@ def score_margin(rate: float) -> float:
 
 def score_settlement(days: int) -> float:
     if days > 60:
-        return min(-100, -100 - (days - 60) * 5)
+        return -150
     if 20 <= days <= 60:
         return min(100, 100 - (days - 20) * 5)
     if 1 < days < 20:
@@ -83,10 +83,8 @@ def score_settlement(days: int) -> float:
 
 
 def score_invoice(days: int) -> float:
-    if 90 < days:
-        return min(-600, -600 - (days -90) * 2)
-    if 60 < days <= 90:
-        return min(-300, -300 - (days - 60) * 10)
+    if 60 < days:
+        return -200
     if 20 < days <= 60:
         return min(0, 0 - (days - 20) * 5)
     if 5 < days <= 20:
@@ -114,8 +112,7 @@ def score_audit_bias(rate: float) -> float:
     if 0.02 <= rate <= 0.08:
         return min(60, 60 - (rate - 0.02) * 8000)
     if rate > 0.08:
-        return min(-540, -540 - (rate - 0.08) * 1000)
-
+        return -420
 
 def score_customer_cost(rate: float) -> float:
     if rate > 0.03:
